@@ -1,97 +1,95 @@
-function recTarefas (){
+function getTasks() {
+  const tasks = JSON.parse(localStorage.getItem('tasks'));
+  const taskList = document.getElementById('taskList');
 
-	var tarefas = JSON.parse(localStorage.getItem('tarefas'));
-	var listaDeTarefas = document.getElementById('listaDeTarefas');
+  taskList.innerHTML = '';
 
-	listaDeTarefas.innerHTML = '';
+  for (let i = 0; i < tasks.length; i++) {
+    const task = {
+      id: tasks[i].id,
+      title: tasks[i].title,
+      description: tasks[i].description,
+      assignee: tasks[i].assignee,
+      card: tasks[i].cardColor,
+      status: tasks[i].status
+    }
 
-	for (var i=0; i < tarefas.length; i++) {
-		var id = tarefas[i].id;
-		var titulo = tarefas[i].titulo;
-		var desc = tarefas[i].descricao;
-		var urgencia = tarefas[i].urgencia;
-		var atribuidoA = tarefas[i].atribuidoA;
-		var card = tarefas[i].card;
-		var status = tarefas[i].status;
-
-		listaDeTarefas.innerHTML +=		'<div class="col s12 m6"><div class="card s6 \' '+card+' \'z-depth-2"><div class="card-content white-text">'+
-										'<h5>' + titulo + '</h5>'+
-										'<h6>' + desc + '</h6>'+
-										'<p><span class="new badge green" data-badge-caption="">' + status + '</span></p>'+
-										'<p><i class="material-icons md-14">access_time</i> ' + urgencia + ' </br> '+
-										'<i class="material-icons md-14">account_circle</i> ' + atribuidoA + '</p></br>'+
-										'<a href="#" class="waves-effect waves-light btn green lighten-1 col s6" onclick="statusConcluido(\''+id+'\')"><i class="material-icons md-14 right">check</i>Concluir</a>'+ 
-			                            '<a href="#" class="waves-effect waves-light btn red lighten-1 col s6" onclick="apagarTarefa(\''+id+'\')"><i class="material-icons md-14 right">backspace</i>Apagar</a> '+
-			                           	'</div></div></div>';
-	}
+    taskList.innerHTML += `
+    <div class="col s12 m6">
+      <div class="card s6 ${task.card} z-depth-2">
+        <div class="card-content white-text">
+        <h5> ${task.title} </h5>
+        <h6> ${task.description} </h6>
+        <p>
+          <span class="new badge green" data-badge-caption=""> ${task.status} </span>
+        </p>
+        <i class="material-icons md-14">account_circle</i> ${task.assignee}</p></br>
+        <a href="#" class="waves-effect waves-light btn green lighten-1 col s6" onclick="updateStatus(\'${task.id}\')"><i class="material-icons md-14 right">check</i>Concluir</a>
+        <a href="#" class="waves-effect waves-light btn red lighten-1 col s6" onclick="deleteTask(\'${task.id}\')"><i class="material-icons md-14 right">backspace</i>Apagar</a>
+      </div>
+    </div>
+    `
+  }
 
 }
 
-document.getElementById('inputTarefas').addEventListener('submit', salvarTarefa);
+document.getElementById('tasksInput').addEventListener('submit', saveTask);
 
-
-function salvarTarefa(e) {
-	var idTarefa = chance.guid();
-	var tituloTarefa = document.getElementById('inputTituloTarefa').value;
-	var descTarefa = document.getElementById('inputDescTarefa').value;
-	var urgenciaTarefa = document.getElementById('inputUrgenciaTarefa').value;
-	var atribuidoATarefa = document.getElementById('inputAtribuidoATarefa').value;
-	var corDoCard = document.getElementById('inputCorDoCard').value;
-	var statusTarefa = 'Aberta';
-
-
-	var tarefa = {
-		id: idTarefa,
-		titulo: tituloTarefa,
-		descricao: descTarefa,
-		urgencia: urgenciaTarefa,
-		atribuidoA: atribuidoATarefa,
-		card: corDoCard,
-		status: statusTarefa
-	}
-
-  if (localStorage.getItem('tarefas') === null) {
-    var tarefas = [];
-    tarefas.push(tarefa);
-    localStorage.setItem('tarefas', JSON.stringify(tarefas));
-  } else {
-    var tarefas = JSON.parse(localStorage.getItem('tarefas'));
-    tarefas.push(tarefa);
-    localStorage.setItem('tarefas', JSON.stringify(tarefas));
+function saveTask(e) {
+  function getInputValueById(inputId) {
+    return document.getElementById(inputId).value;
   }
 
-	document.getElementById('inputTarefas').reset();
+  const task = {
+    id: chance.guid(),
+    title: getInputValueById('titleInput'),
+    description: getInputValueById('descriptionInput'),
+    assignee: getInputValueById('assigneeInput'),
+    cardColor: getInputValueById('cardColorInput'),
+    status: 'Open'
+  }
 
-	recTarefas();
+  if (localStorage.getItem('tasks') == null) {
+    const tasks = [];
+    tasks.push(task);
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  } else {
+    const tasks = JSON.parse(localStorage.getItem('tasks'));
+    tasks.push(task);
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }
+
+  document.getElementById('tasksInput').reset();
+
+	getTasks();
 
 	e.preventDefault();
-
 }
 
-function statusConcluido (id) {
-  var tarefas = JSON.parse(localStorage.getItem('tarefas'));
-  
-  for(var i = 0; i < tarefas.length; i++) {
-    if (tarefas[i].id == id) {
-      tarefas[i].status = "Concluída";
-    }
-  }
-    
-  localStorage.setItem('tarefas', JSON.stringify(tarefas));
-  
-  recTarefas();
-}	
+function updateStatus(id) {
+  const tasks = JSON.parse(localStorage.getItem('tasks'));
 
-function apagarTarefa (id) {
-  var tarefas = JSON.parse(localStorage.getItem('tarefas'));
-  
-  for(var i = 0; i < tarefas.length; i++) {
-    if (tarefas[i].id == id) {
-      tarefas.splice(i, 1);
-    }
+  for (let i = 0; i < tasks.length; i++) {
+    if (tasks[i].id === id) {
+			tasks[i].status = 'Done';
+		}
+  }
+
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+
+	getTasks();
+}
+
+function deleteTask(id) {
+  const tasks = JSON.parse(localStorage.getItem('tasks'));
+
+  for (let i = 0; i < tasks.length; i++) {
+		if (tasks[i].id == id) {
+			tasks.splice(i, 1);
+		}
   }
   
-  localStorage.setItem('tarefas', JSON.stringify(tarefas));
-  
-  recTarefas();
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+
+  getTasks();
 }

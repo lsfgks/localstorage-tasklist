@@ -1,101 +1,93 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="utf-8">
 	<title>Lista de Tarefas</title>
 
-    <!-- Materialize -->
+	<!-- Materialize -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-
-<style type="text/css">
-	.material-icons.md-14 { font-size: 14px; }
-</style>
+	<style type="text/css">
+		.material-icons.md-14 {
+			font-size: 14px;
+		}
+	</style>
 
 
 </head>
 
-<body onload="recTarefas();">
-
+<body onload="getTasks();">
 	<nav class="grey darken-2">
-		<div class="container">	
-		<div class="nav-wrapper">
-			<a href="#" class="flow-text">Lista de tarefas</a>
-		</div>
-	</div>
-	</nav>
-	 
-	<div class="container">		
-		<div>
-			</br><h5>Adicionar nova tarefa:</h5>
-			<form id="inputTarefas">
-
-				<div class="form-group">
-					<label for="inputDescTarefa">Título</label>
-					<input type="text" class="form-control" id="inputTituloTarefa" placeholder="Título da tarefa" maxlength="50"> 
-				</div>
-
-				<div class="form-group">
-					<label for="inputDescTarefa">Descrição</label>
-					<input type="text" class="form-control" id="inputDescTarefa" placeholder="Descrição da tarefa." maxlength="50"> 
-				</div>
-
-				<div class="input-field">
-					<select id="inputUrgenciaTarefa">
-					<option value="Prioridade Baixa">Baixa</option>
-					<option value="Prioridade Média">Média</option>
-					<option value="Prioridade Alta">Alta</option>
-					</select>
-					<label for="inputDescTarefa">Urgência</label>
-				</div>
-
-				<div class="form-group">
-					<label for="inputDescTarefa">Atribuído a</label>
-					<input type="text" class="form-control" id="inputAtribuidoATarefa" placeholder="Insira o responsável.">
-				</div>
-
-				<div class="input-field">
-					<select id="inputCorDoCard">
-					<option value="blue-grey darken-1">Cinza</option>
-					<option value="orange darken-2">Laranja claro</option>
-					<option value="deep-orange darken-2">Laranja escuro</option>
-					<option value="brown darken-2">Marrom</option>
-					<option value="lime darken-2">Verde limão</option>
-					</select>
-					<label for="inputDescTarefa">Cor do card</label>
-				</div>
-
-
-				<button type="submit" class="waves-effect waves-light btn grey darken-1 col s6">Adicionar</button>					
-			</form>
-	</div>
-
-</br></br>
-
-
-	<div class="row">
-		<div class="col s12">
-			<div id="listaDeTarefas">
+		<div class="container">
+			<div class="nav-wrapper">
+				<a href="#" class="flow-text">Lista de tarefas</a>
 			</div>
 		</div>
-	</div>
+	</nav>
 
-</div>
+	<div class="container">
+		<div>
+			</br>
+			<h5>Adicionar nova tarefa:</h5>
+			<form id="tasksInput">
+				<div class="form-group">
+					<label for="titleInput">Título</label>
+					<input type="text" class="form-control" id="titleInput" placeholder="Título da tarefa" maxlength="50">
+				</div>
+
+				<div class="form-group">
+					<label for="descriptionInput">Descrição</label>
+					<input type="text" class="form-control" id="descriptionInput" placeholder="Descrição da tarefa." maxlength="50">
+				</div>
+
+				<div class="form-group">
+					<label for="assigneeInput">Atribuído a</label>
+					<input type="text" class="form-control" id="assigneeInput" placeholder="Insira o responsável.">
+				</div>
+
+				<div class="input-field">
+					<select id="cardColorInput">
+						<option value="blue-grey darken-1">Cinza</option>
+						<option value="orange darken-2">Laranja claro</option>
+						<option value="deep-orange darken-2">Laranja escuro</option>
+						<option value="brown darken-2">Marrom</option>
+						<option value="lime darken-2">Verde limão</option>
+					</select>
+					<label for="cardColorInput">Cor do card</label>
+				</div>
+
+				<button type="submit" class="waves-effect waves-light btn grey darken-1 col s6">Adicionar</button>
+			</form>
+		</div>
+
+		</br>
+		</br>
+
+		<div class="row">
+			<div class="col s12">
+				<div id="taskList">
+				</div>
+			</div>
+		</div>
+
+	</div>
 
 	<!-- JS -->
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chance/1.0.12/chance.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/chance/1.0.12/chance.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 	<script src="main.js"></script>
 
 	<script>
-	$( document ).ready(function(){
-		$('select').material_select();
-	})
-</script>
+		$(document).ready(function () {
+			$('select').material_select();
+		})
+	</script>
 </body>
+
 </html>
